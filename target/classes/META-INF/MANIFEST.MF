@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: MySongs
+Implementation-Version: 0.0.1
+Built-By: davidsanchez
+Implementation-Vendor-Id: com.sanchez.david.mysong
+Build-Jdk: 1.8.0_20
+Implementation-URL: http://projects.spring.io/spring-boot/mySong/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
