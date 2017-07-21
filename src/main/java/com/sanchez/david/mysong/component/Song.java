@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,7 +21,8 @@ public class Song {
 	private long id;
 	private String title;
 	private String name;
-	@ManyToMany(mappedBy = "songList")
+	private String img;
+	@ManyToMany(fetch = FetchType.EAGER , mappedBy = "songList")
 	@JsonBackReference
 	private List<User> userList = new ArrayList<>();
 	
@@ -75,6 +77,14 @@ public class Song {
 	
 	public void setId(long id){
 		this.id = id;
+	}
+
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 
 	@Override
