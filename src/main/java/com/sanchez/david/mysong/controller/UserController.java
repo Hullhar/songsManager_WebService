@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sanchez.david.mysong.component.Song;
@@ -32,10 +33,15 @@ public class UserController {
 	 */
 	@RequestMapping(value="/getUser")
 	@CrossOrigin
-	public User getUser(String alias){
+	public User getUser(@RequestParam("alias")String alias, @RequestParam("password") String password){
 		User user = null;
 		if (uRepository.exists(alias)){
 			user = uRepository.findOne(alias);
+			if (user.getPassword().equals(password)){
+				return user;
+			} else {
+				return new User();
+			}
 		}
 		return user;
 	}

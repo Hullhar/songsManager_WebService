@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -17,7 +18,7 @@ public class User {
 	@Id
 	private String alias;
 	private String password;
-	@ManyToMany
+	@ManyToMany (fetch = FetchType.EAGER)
 	@JoinTable(name = "user_songs",
 	joinColumns = @JoinColumn(name="user_alias"),
 	inverseJoinColumns = @JoinColumn(name="song_id"))

@@ -15,6 +15,8 @@ import com.sanchez.david.mysong.component.Song;
 import com.sanchez.david.mysong.component.User;
 import com.sanchez.david.mysong.repository.SongsRepository;
 import com.sanchez.david.mysong.repository.UserRepository;
+import com.sanchez.david.mysong.resouces.HttpManager;
+import com.sanchez.david.mysong.resouces.ParserXml;
 
 @RestController
 public class SongsController{
@@ -23,6 +25,8 @@ public class SongsController{
 	private SongsRepository repository;
 	@Autowired
 	private UserRepository uRepository;
+	// Songs queries to obtain cover arts
+	private final String GRACE_URL = "https://c82148243.web.cddbp.net/webapi/xml/1.0/";
 	
 	@PostConstruct
 	public void init(){
@@ -43,6 +47,22 @@ public class SongsController{
 		uRepository.save(new User("David","Da821984",null));
 		uRepository.save(new User("Elena","1234",null));
 		uRepository.save(new User("admin","0000",null));
+		
+		// Load songList
+		User user = uRepository.findOne("admin");
+		Song song1 = repository.findByTitle("Yeah Baby");
+		Song song2 = repository.findByTitle("Unsteady");
+		song1.getUserList().add(user);
+		song2.getUserList().add(user);
+		user.getSongList().add(song1);
+		user.getSongList().add(song2);
+		user.getSongList().add(song1);
+		user.getSongList().add(song2);
+		user.getSongList().add(song1);
+		user.getSongList().add(song2);
+		uRepository.save(user);
+		repository.save(song1);
+		repository.save(song2);
 		
 	}
 
@@ -89,6 +109,10 @@ public class SongsController{
 		if (user != null){
 			if (song != null && song.getName().isEmpty() == false && song.getTitle().isEmpty() == false){
 				if (!repository.existsByTitleAndName(song.getTitle(),song.getName())){
+					// Add cover art to the song
+					String dataResponse = HttpManager.getData(GRACE_URL, song.getTitle(), song.getName());
+					String img = ParserXml.parserImg(dataResponse);
+					song.setImg(img);
 					song.getUserList().add(user);
 					repository.save(song);
 					user.getSongList().add(song);
